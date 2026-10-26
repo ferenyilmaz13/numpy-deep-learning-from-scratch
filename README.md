@@ -1,49 +1,49 @@
-# 🧠 NumPy ile Sıfırdan Derin Öğrenme Kütüphanesi (Deep Learning from Scratch)
+# 🧠 Deep Learning Framework from Scratch using NumPy
 
-Bu proje; PyTorch, TensorFlow veya JAX gibi herhangi bir hazır derin öğrenme kütüphanesi **kullanılmadan**, sadece **NumPy** ve temel matris matematiği kullanılarak sıfırdan inşa edilmiş modüler bir derin öğrenme altyapısıdır.
+This project is a modular deep learning framework built entirely from scratch using only **NumPy** and fundamental matrix calculus—without relying on any high-level deep learning libraries like PyTorch, TensorFlow, or JAX.
 
-Proje kapsamı; ileri besleme (forward pass), geriye yayılım (backward pass / automatic differentiation logic), aktivasyon fonksiyonları, kayıp hesaplamaları ve adaptif optimizasyon algoritmalarını (Adam) içerir.
-
----
-
-## 🚀 Öne Çıkan Özellikler
-
-* **Tamamen Modüler Yapı:** PyTorch `nn.Module` mimarisine benzer modüler katman tasarımı.
-* **Türev Akışı ve Zincir Kuralı (Chain Rule):** Tüm katmanlar için matris transpozları üzerinden elle türetilmiş geriye yayılım hesabı.
-* **Adaptif Optimizasyon:** Momentum ve RMSProp mekanizmalarını içeren, Bias Correction destekli **Adam Optimizatörü**.
-* **Sıfır Dış Bağımlılık:** Sadece `NumPy`.
+The framework covers forward pass execution, backward pass logic (manual chain rule implementation), activation functions, loss computations, and adaptive optimization algorithms (Adam).
 
 ---
 
-## 📐 Matematiksel ve Mimarî Bileşenler
+## 🚀 Key Features
 
-### 1. Katmanlar & Aktivasyonlar (`nn/layers.py`)
+* **Fully Modular Architecture:** Layer design inspired by PyTorch’s `nn.Module` abstraction.
+* **Analytical Gradients & Chain Rule:** Hand-derived backward pass gradients computed via matrix transpositions for all layers.
+* **Adaptive Optimization:** Includes the **Adam Optimizer** featuring Momentum, RMSProp, and Bias Correction.
+* **Zero External Dependencies:** Built strictly using `NumPy`.
 
-* **`Linear` Katmanı:**
-  * *İleri Besleme:* $Z = X \cdot W + b$
-  * *Geriye Yayılım:* $dW = X^\top \cdot dZ$, $db = \sum dZ$, $dX = dZ \cdot W^\top$
-* **`ReLU` Katmanı:**
+---
+
+## 📐 Mathematical & Architectural Components
+
+### 1. Layers & Activations (`nn/layers.py`)
+
+* **`Linear` Layer:**
+  * *Forward Pass:* $Z = X \cdot W + b$
+  * *Backward Pass:* $dW = X^\top \cdot dZ$, $db = \sum dZ$, $dX = dZ \cdot W^\top$
+* **`ReLU` Activation:**
   * $f(Z) = \max(0, Z)$
   * $dZ = dH \odot (Z > 0)$
-* **`MSELoss` (Ortalama Kare Hata):**
+* **`MSELoss` (Mean Squared Error):**
   * $\text{Loss} = \frac{1}{N} \sum (\hat{Y} - Y)^2$
   * $d\hat{Y} = \frac{2}{N} (\hat{Y} - Y)$
-* **`Sequential` Modülü:** Katmanları ileriye doğru sırayla, geriye doğru ise ters sırada çalıştıran zincirleme mimari.
+* **`Sequential` Module:** A chained container executing layers sequentially in the forward pass and in reverse order during backpropagation.
 
-### 2. Optimizatörler (`nn/optimizers.py`)
+### 2. Optimizers (`nn/optimizers.py`)
 
-* **`SGD`:** Sabit öğrenme oranı ile parametre güncellemesi ($\theta \leftarrow \theta - \eta \cdot g$).
+* **`SGD`:** Parameter update using a constant learning rate ($\theta \leftarrow \theta - \eta \cdot g$).
 * **`Adam`:**
-  * 1. Moment (Momentum): $m_t = \beta_1 m_{t-1} + (1-\beta_1)g_t$
-  * 2. Moment (RMSProp): $v_t = \beta_2 v_{t-1} + (1-\beta_2)g_t^2$
-  * Bias Düzeltmesi: $\hat{m}_t = \frac{m_t}{1-\beta_1^t}$, $\hat{v}_t = \frac{v_t}{1-\beta_2^t}$
-  * Güncelleme: $\theta_t = \theta_{t-1} - \frac{\eta}{\sqrt{\hat{v}_t} + \epsilon} \hat{m}_t$
+  * 1st Moment (Momentum): $m_t = \beta_1 m_{t-1} + (1-\beta_1)g_t$
+  * 2nd Moment (RMSProp): $v_t = \beta_2 v_{t-1} + (1-\beta_2)g_t^2$
+  * Bias Correction: $\hat{m}_t = \frac{m_t}{1-\beta_1^t}$, $\hat{v}_t = \frac{v_t}{1-\beta_2^t}$
+  * Update: $\theta_t = \theta_{t-1} - \frac{\eta}{\sqrt{\hat{v}_t} + \epsilon} \hat{m}_t$
 
 ---
 
-## 📊 Eğitim ve Performans
+## 📊 Training & Performance
 
-Yazılan kütüphane üzerinde inşa edilen çok katmanlı yapay sinir ağı 100 epoch boyunca eğitilmiş ve kayıp (loss) değerinin değişimi gözlemlenmiştir:
+A multi-layer neural network built with this framework was trained over 100 epochs, demonstrating efficient loss convergence:
 
 * **Epoch 1:** Loss = `0.3948`
 * **Epoch 50:** Loss = `0.0198`
@@ -51,15 +51,16 @@ Yazılan kütüphane üzerinde inşa edilen çok katmanlı yapay sinir ağı 100
 
 ---
 
-## 🛠️ Kurulum ve Çalıştırma
+## 🛠️ Setup & Execution
 
 ```bash
-# Depoyu klonlayın
+# Clone the repository
 git clone <repository_url>
 cd numpy-deep-learning-from-scratch
 
-# Gerekli paketi yükleyin
+# Install required dependencies
 pip install numpy
 
-# Eğitimi başlatın
+# Run training script
 python train.py
+```
